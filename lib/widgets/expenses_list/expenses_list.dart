@@ -26,7 +26,6 @@ class ExpensesList extends StatelessWidget {
               ),
               key: ValueKey(expenses[index]),
               onDismissed: (direction) {
-                print(Theme.of(context).cardTheme.margin!.horizontal);
                 removeExpense(
                   expenses[index],
                 );
