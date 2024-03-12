@@ -1,3 +1,4 @@
+
 import 'package:expense_tracker/models/expense.dart';
 import 'package:expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
@@ -63,34 +64,52 @@ class _ExpenseState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     Widget notItemContent = const Center(
       child: Text('No expenses found, Start adding some!'),
     );
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter ExpenseTracker'),
-        actions: [
-          IconButton(
-            onPressed: _openAddExpenseOverlay,
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Chart(
-            expenses: _registerExpenses,
-          ),
-          Expanded(
-            child: _registerExpenses.isNotEmpty
-                ? ExpensesList(
+        appBar: AppBar(
+          title: const Text('Flutter ExpenseTracker'),
+          actions: [
+            IconButton(
+              onPressed: _openAddExpenseOverlay,
+              icon: const Icon(Icons.add),
+            ),
+          ],
+        ),
+        body: width < 600
+            ? Column(
+                children: [
+                  Chart(
                     expenses: _registerExpenses,
-                    removeExpense: _removeExpense,
+                  ),
+                  Expanded(
+                    child: _registerExpenses.isNotEmpty
+                        ? ExpensesList(
+                            expenses: _registerExpenses,
+                            removeExpense: _removeExpense,
+                          )
+                        : notItemContent,
                   )
-                : notItemContent,
-          )
-        ],
-      ),
-    );
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(
+                    child: Chart(
+                      expenses: _registerExpenses,
+                    ),
+                  ),
+                  Expanded(
+                    child: _registerExpenses.isNotEmpty
+                        ? ExpensesList(
+                            expenses: _registerExpenses,
+                            removeExpense: _removeExpense,
+                          )
+                        : notItemContent,
+                  )
+                ],
+              ));
   }
 }
